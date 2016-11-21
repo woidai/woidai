@@ -3,6 +3,7 @@ const index = require('./controllers/index');
 const messages = require('./controllers/messages');
 const videos = require('./controllers/videos');
 const upload = require('./controllers/upload');
+const deploy = require('./controllers/deploy');
 
 
 const compress = require('koa-compress');
@@ -52,21 +53,7 @@ app.use(function*(next) {
 });
 
 //auto deploy
-app.post('/deploy', function(req, res) {
-	var spawn = require('child_process').spawn,
-		deploy = spawn('sh', ['./deploy.sh']);
-
-	deploy.stdout.on('data', function(data) {
-		console.log('' + data);
-	});
-
-	deploy.on('close', function(code) {
-		console.log('Child process exited with code ' + code);
-	});
-	res.json(200, {
-		message: 'Github Hook received!'
-	})
-});
+app.use(route.get('/deploy',deploy.deploy));
 
 if (!module.parent) {
 	app.listen(3000);
