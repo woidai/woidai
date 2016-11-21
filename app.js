@@ -45,10 +45,27 @@ app.use(serve(path.join(__dirname, 'public')));
 app.use(compress());
 
 //404
-app.use(function *(next) {
-  yield next;
-  if (this.body || !this.idempotent) return;
-  this.redirect('/404.html');
+app.use(function*(next) {
+	yield next;
+	if (this.body || !this.idempotent) return;
+	this.redirect('/404.html');
+});
+
+//auto deploy
+app.post('/deploy', function(req, res) {
+	var spawn = require('child_process').spawn,
+		deploy = spawn('sh', ['./deploy.sh']);
+
+	deploy.stdout.on('data', function(data) {
+		console.log('' + data);
+	});
+
+	deploy.on('close', function(code) {
+		console.log('Child process exited with code ' + code);
+	});
+	res.json(200, {
+		message: 'Github Hook received!'
+	})
 });
 
 if (!module.parent) {
