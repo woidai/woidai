@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+  <form action="/upload/uploadFile" method="post" enctype="multipart/form-data">
+  	<!-- <textarea placeholder="Insert a message" name="message"></textarea> -->
+    <input type="file" name="file" multiple>
+    <input type="submit" value="上传">
+  </form>
+{% endblock %}

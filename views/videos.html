@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+  <ul>
+    {% for video in videos %}
+      <li>{{ video._id }}:{{ video.title }}  {{ video.desc }} </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
