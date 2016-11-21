@@ -9,7 +9,7 @@ module.exports.deploy = function *deploy(ctx) {
 	deploy.on('close', function(code) {
 		console.log('Child process exited with code ' + code);
 	});
-	res.json(200, {
-		message: 'Github Hook received!'
-	})
+	
+	this.body = 'Github Hook received!'
+	
 };
