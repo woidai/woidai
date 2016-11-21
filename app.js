@@ -53,7 +53,7 @@ app.use(function*(next) {
 });
 
 //auto deploy
-app.use(route.get('/deploy',deploy.deploy));
+app.use(route.post('/deploy',deploy.deploy));
 
 if (!module.parent) {
 	app.listen(3000);
