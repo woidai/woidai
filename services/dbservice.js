@@ -1,6 +1,7 @@
 'use strict';
 
 var mongo = require('../libs/helper_mongo');
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = {
 	// 创建
