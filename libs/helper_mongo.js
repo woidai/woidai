@@ -3,7 +3,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 
-var mongoLink = 'mongodb://test:test@127.0.0.1:27017/vidzy';
+var mongoLink = 'mongodb://127.0.0.1:27017/vidzy';
 // 这里修改成你的MongoLink字符串mongodb://user:password@yourserver
 
 // 插入方法
