@@ -1,9 +1,11 @@
 'use strict';
+
 const index = require('./controllers/index');
 const messages = require('./controllers/messages');
 const videos = require('./controllers/videos');
 const upload = require('./controllers/upload');
 const deploy = require('./controllers/deploy');
+const wxauth = require('./controllers/wxauth');
 
 
 const compress = require('koa-compress');
@@ -37,6 +39,9 @@ app.use(route.get('/videos/:id', videos.fetch));
 //upload
 app.use(route.get('/upload', upload.home));
 app.use(route.post('/upload/uploadFile', upload.uploadFile));
+
+//微信认证
+app.use(route.get('/wxauth/getSession_key',));
 
 
 // Serve static files
