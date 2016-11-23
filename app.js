@@ -41,7 +41,7 @@ app.use(route.get('/upload', upload.home));
 app.use(route.post('/upload/uploadFile', upload.uploadFile));
 
 //微信认证
-app.use(route.get('/wxauth/getSession_key',));
+app.use(route.get('/wxauth/getSession_key',wxauth.getSession_key));
 
 
 // Serve static files
