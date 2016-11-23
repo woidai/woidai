@@ -7,13 +7,11 @@ const WXBizDataCrypt = require('../libs/WXBizDataCrypt');
 const GET_SESSION_KEY_URL = "https://api.weixin.qq.com/sns/jscode2session?appid=wxd95c962a6b7690df&secret=d7b80d870a7aa764f2114484a89f295c&grant_type=authorization_code&js_code=";
 
 
-module.exports.getSession_key = function* getSession_key(cxt) {
+module.exports.getSession_key = function* getSession_key() {
 
-    console.log("------get_session_key  cxt request-------" + cxt.request);
+    console.log("------get_session_key  next request-------" + next.request);
 
-	// console.log("------get_session_key  cxt req-------" + cxt.req);
-
-	var code = cxt.request.code;
+	var code = next.request.code;
 	console.log("------get_session_key  code-------" + code);
 	co(function*() {
 		var url = GET_SESSION_KEY_URL + code;
