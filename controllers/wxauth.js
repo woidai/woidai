@@ -8,8 +8,11 @@ const GET_SESSION_KEY_URL = "https://api.weixin.qq.com/sns/jscode2session?appid=
 
 
 module.exports.getSession_key = function* getSession_key(cxt) {
-	console.log("------get_session_key  cxt req-------" + cxt.req);
-	console.log("------get_session_key  cxt request-------" + cxt.request);
+
+    console.log("------get_session_key  cxt request-------" + cxt.request);
+
+	// console.log("------get_session_key  cxt req-------" + cxt.req);
+
 	var code = cxt.request.code;
 	console.log("------get_session_key  code-------" + code);
 	co(function*() {
