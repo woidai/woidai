@@ -1,3 +1,4 @@
+'use strict';
 // helper_mongo.js文件
 // 使用官方驱动
 var MongoClient = require('mongodb').MongoClient;
@@ -8,108 +9,133 @@ var mongoLink = 'mongodb://127.0.0.1:27017/vidzy';
 
 // 插入方法
 var insert = function(collectionName, obj) {
-		return new Promise(function(resolve, reject) {
-			MongoClient.connect(mongoLink, function(err, db) {
-				if (err) reject(err);
-				var collection = db.collection(collectionName);
+	return new Promise(function(resolve, reject) {
+		MongoClient.connect(mongoLink, function(err, db) {
+			if (err) reject(err);
+			var collection = db.collection(collectionName);
 
-				collection.insert(obj, {
-					w: 1
-				}, function(err, res) {
-					db.close();
-					if (err) reject(err);
-					else resolve(res[0]);
-				});
+			collection.insert(obj, {
+				w: 1
+			}, function(err, res) {
+				db.close();
+
+				console.log("-------mongodb insert---------");
+
+				if (err) reject(err);
+				else resolve(res[0]);
 			});
 		});
-	}
+	});
+}
 
 // 更新
 var update = function(collectionName, obj) {
-		return new Promise(function(resolve, reject) {
-			MongoClient.connect(mongoLink, function(err, db) {
+	return new Promise(function(resolve, reject) {
+		MongoClient.connect(mongoLink, function(err, db) {
+			if (err) reject(err);
+			var collection = db.collection(collectionName);
+			collection.update({
+				_id: new ObjectID(obj._id)
+			}, obj, {
+				upsert: true,
+				w: 1
+			}, function(err, res) {
+				db.close();
 				if (err) reject(err);
-				var collection = db.collection(collectionName);
-				collection.update({
-					_id: new ObjectID(obj._id)
-				}, obj, {
-					upsert: true,
-					w: 1
-				}, function(err, res) {
-					db.close();
-					if (err) reject(err);
-					else resolve(res);
-				});
+				else resolve(res);
 			});
 		});
-	}
+	});
+}
 
 // 查找一个
 var findOne = function(collectionName, query, option) {
-		return new Promise(function(resolve, reject) {
-			MongoClient.connect(mongoLink, function(err, db) {
-				if (err) reject(err);
+	return new Promise(function(resolve, reject) {
+		MongoClient.connect(mongoLink, function(err, db) {
+			if (err) reject(err);
 
-				var collection = db.collection(collectionName);
+			var collection = db.collection(collectionName);
 
-				if (option == undefined || option == null) {
-					collection.findOne(query, function(err, res) {
-						db.close();
-						if (err) reject(err);
-						else resolve(res);
-					});
-				} else {
-					collection.findOne(query, option, function(err, res) {
-						db.close();
-						if (err) reject(err);
-						else resolve(res);
-					});
-				}
-			});
-		});
-	}
-
-// 查找多个
-var find = function(collectionName, query, option) {
-		return new Promise(function(resolve, reject) {
-			MongoClient.connect(mongoLink, function(err, db) {
-				if (err) reject(err);
-
-				var collection = db.collection(collectionName);
-				if (option == undefined || option == null) {
-					collection.find(query).toArray(function(err, res) {
-						db.close();
-						if (err) reject(err);
-						else resolve(res);
-					});
-				} else {
-					collection.find(query, option).toArray(function(err, res) {
-						db.close();
-						if (err) reject(err);
-						else resolve(res);
-					});
-				}
-			});
-		});
-	}
-
-// 删除
-var remove = function(collectionName, query) {
-		return new Promise(function(resolve, reject) {
-			MongoClient.connect(mongoLink, function(err, db) {
-				if (err) reject(err);
-				var collection = db.collection(collectionName);
-
-				collection.remove(query, {
-					w: 1
-				}, function(err, res) {
+			if (option == undefined || option == null) {
+				collection.findOne(query, function(err, res) {
 					db.close();
 					if (err) reject(err);
 					else resolve(res);
 				});
+			} else {
+				collection.findOne(query, option, function(err, res) {
+					db.close();
+					if (err) reject(err);
+					else resolve(res);
+				});
+			}
+		});
+	});
+}
+
+// 查找多个
+var find = function(collectionName, query, option) {
+	return new Promise(function(resolve, reject) {
+		MongoClient.connect(mongoLink, function(err, db) {
+			if (err) reject(err);
+
+			var collection = db.collection(collectionName);
+			if (option == undefined || option == null) {
+				collection.find(query).toArray(function(err, res) {
+					db.close();
+					if (err) reject(err);
+					else resolve(res);
+				});
+			} else {
+				collection.find(query, option).toArray(function(err, res) {
+					db.close();
+					if (err) reject(err);
+					else resolve(res);
+				});
+			}
+		});
+	});
+}
+
+// 删除
+var remove = function(collectionName, query) {
+	return new Promise(function(resolve, reject) {
+		MongoClient.connect(mongoLink, function(err, db) {
+			if (err) reject(err);
+			var collection = db.collection(collectionName);
+
+			collection.remove(query, {
+				w: 1
+			}, function(err, res) {
+				db.close();
+
+				if (err) reject(err);
+				else resolve(res);
 			});
 		});
-	}
+	});
+}
+
+// 删除表
+var drop = function(collectionName) {
+	return new Promise(function(resolve, reject) {
+		MongoClient.connect(mongoLink, function(err, db) {
+			if (err) reject(err);
+			var collection = db.collection(collectionName);
+
+			collection.drop({
+				w: 1
+			}, function(err, res) {
+				db.close();
+
+				console.log("-------mongodb drop ---------");
+
+				if (err) reject(err);
+				else resolve(res);
+			});
+		});
+	});
+}
 
 // 计数
 var count = function(collectionName, query, option) {
@@ -136,9 +162,41 @@ var count = function(collectionName, query, option) {
 	});
 }
 
+// 判断表是否存在
+var isExist = function(collectionName) {
+	return new Promise(function(resolve, reject) {
+		MongoClient.connect(mongoLink, function(err, db) {
+			var res;
+			if (err) {
+				reject(err);
+				console.error(err);
+				res = false;
+				resolve(res);
+			}
+			db.listCollections({
+					name: collectionName
+				})
+				.toArray(function(err, collections) {
+					if (err != null) res = false;
+					if (collections.length > 0) {
+						console.log(collectionName + "-----collections.length > 0");
+						res = true;
+						resolve(res);
+					}
+					console.log(collectionName + "-----collections.length < 0");
+					res = false;
+					resolve(res);
+				});
+			
+		});
+	});
+}
+
 module.exports.insert = insert;
 module.exports.update = update;
 module.exports.findOne = findOne;
 module.exports.find = find;
 module.exports.remove = remove;
 module.exports.count = count;
+module.exports.drop = drop;
+module.exports.isExist = isExist;

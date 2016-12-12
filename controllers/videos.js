@@ -17,7 +17,8 @@ module.exports.home = function *home(ctx) {
 };
 
 module.exports.list = function *list() {
-  this.body = yield serviceVideo.findAll();
+  var data = yield serviceVideo.findAll();
+  this.body = {data:data,code:'0'};
 };
 
 module.exports.fetch = function *fetch(id) {

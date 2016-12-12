@@ -38,7 +38,7 @@ module.exports = {
 
 	// 取全部
 	getAll: function*() {
-		var res = yield mongo.find(this.collectionName, {});
+		var res = yield mongo.find(this.collectionName, new Object());
 		return res;
 	},
 
@@ -85,6 +85,19 @@ module.exports = {
 		if (!query)
 			query = {};
 		var res = yield mongo.count(this.collectionName, query);
+		return res;
+	},
+
+	// 删除表
+	drop: function*() {
+		var res = yield mongo.drop(this.collectionName);
+		return res;
+	},
+
+	//判断表是否存在
+	isExist: function*() {
+		var res = yield mongo.isExist(this.collectionName);
+		console.log("" + res);
 		return res;
 	}
 }
