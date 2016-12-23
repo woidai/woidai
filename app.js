@@ -24,6 +24,8 @@ const stringUtil = require('./libs/StringUtil');
 //首页
 app.use(route.get('/', index.home));
 
+// Serve static files
+app.use(serve(path.join(__dirname, 'public')));
 
 
 //统一校验
@@ -88,10 +90,6 @@ app.use(route.get('/wxauth/getSession_key', wxauth.getSession_key));
 app.use(route.get('/region', region.getAll));
 app.use(route.get('/region/:pCode', region.getAreaByPCode));
 
-
-
-// Serve static files
-app.use(serve(path.join(__dirname, 'public')));
 
 // Compress
 app.use(compress());
