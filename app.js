@@ -36,6 +36,7 @@ app.use(function*(next) {
 	//TODO 校验session 排除获取session的接口
 	var path = this.path;
 	if (path.startsWith('/wxauth/getSession_key')
+		 || path.startsWith('/deploy')
 		 || path.startsWith('/update')
 		 || path.startsWith('/region')) {
 		yield next;
